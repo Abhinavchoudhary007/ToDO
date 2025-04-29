@@ -30,6 +30,6 @@ A simple yet fully functional **Todo web application** built using **Django** an
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/abhinavrorms7/django-todo-app.git
+   git clone https://github.com/abhinavchoudhary007/django-todo-app.git
    cd django-todo-app
 
