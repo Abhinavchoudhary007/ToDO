@@ -1,0 +1,38 @@
+{% load form_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Completed Tasks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-3xl mx-auto bg-white rounded shadow p-6 relative">
+        <img src="https://cdn0.iconfinder.com/data/icons/ui-essence/32/_88ui-1024.png" alt="Logo" class="absolute top-4 left-4 w-12 h-12 object-contain" />
+        <h1 class="text-3xl font-bold mb-1 text-center">Completed Tasks</h1>
+        <p class="text-center text-sm text-green-500 mb-6">Made by Abhinav Choudhary</p>
+
+        <a href="{% url 'index' %}" class="inline-block mb-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Back to Task List</a>
+
+        <ul class="space-y-4">
+            {% for task in tasks %}
+                <li class="border border-gray-300 rounded p-4 bg-gray-50 flex items-center justify-between">
+                    <div>
+                        <strong class="text-lg">{{ task.title }}</strong><br>
+                        <p class="text-gray-700">Description: {{ task.description }}</p>
+                        <p class="text-gray-500 text-sm">Created at: {{ task.creation_time }}</p>
+                        <p class="text-gray-500 text-sm">Due date: {{ task.due_date }}</p>
+                    </div>
+                    <form method="post" action="{% url 'delete_task' task.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Delete</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li class="text-gray-500">No completed tasks yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% load form_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todo Index</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-3xl mx-auto bg-white rounded shadow p-6 relative">
+        <img src="https://cdn0.iconfinder.com/data/icons/ui-essence/32/_88ui-1024.png" alt="Logo" class="absolute top-4 left-4 w-12 h-12 object-contain" />
+        <h1 class="text-3xl font-bold mb-6 text-center">Todo App</h1>
+        <p class="text-center text-sm text-green-500 mb-6">Made by Abhinav Choudhary</p>
+
+        <h2 class="text-xl font-semibold mb-4 bg-Skyblue">Add a new task</h2>
+        <form method="post" class="mb-8">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <label for="{{ form.title.id_for_label }}" class="block font-medium text-gray-700">{{ form.title.label }}</label>
+                {{ form.title|add_class:"w-full p-2 border border-gray-300 rounded" }}
+                {% if form.title.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.title.errors.as_text }}</p>
+                {% endif %}
+
+                <label for="{{ form.description.id_for_label }}" class="block font-medium text-gray-700">{{ form.description.label }}</label>
+                {{ form.description|add_class:"w-full p-2 border border-gray-300 rounded" }}
+                {% if form.description.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.description.errors.as_text }}</p>
+                {% endif %}
+
+                <label for="{{ form.due_date.id_for_label }}" class="block font-medium text-gray-700">{{ form.due_date.label }}</label>
+                {{ form.due_date|add_class:"w-full p-2 border border-gray-300 rounded" }}
+                {% if form.due_date.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.due_date.errors.as_text }}</p>
+                {% endif %}
+            </div>
+            <button type="submit" name="add_task" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Task</button>
+            <a href="{% url 'completed_tasks' %}" class="mt-4 ml-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Completed Task</a>
+        </form>
+
+        <h2 class="text-xl font-semibold mb-4">Task List</h2>
+        <ul class="space-y-4">
+            {% for task in tasks %}
+                <li class="border border-gray-300 rounded p-4 bg-gray-50 flex items-center space-x-4">
+                    <form method="post" action="{% url 'toggle_completed' task.id %}">
+                        {% csrf_token %}
+                        <input type="checkbox" name="completed" onchange="this.form.submit()" {% if task.completed %}checked{% endif %} class="w-5 h-5">
+                    </form>
+                    <div>
+                        <strong class="text-lg">{{ task.title }}</strong><br>
+                        <p class="text-gray-700">Description: {{ task.description }}</p>
+                        <p class="text-gray-500 text-sm">Created at: {{ task.creation_time }}</p>
+                        <p class="text-gray-500 text-sm">Due date: {{ task.due_date }}</p>
+                        <a href="{% url 'edit_task' task.id %}" class="inline-block mt-2 text-blue-600 hover:underline">Edit</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="text-gray-500">No tasks yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% load form_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edit Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-3xl mx-auto bg-white rounded shadow p-6 relative">
+        <img src="https://cdn0.iconfinder.com/data/icons/ui-essence/32/_88ui-1024.png" alt="Logo" class="absolute top-4 left-4 w-12 h-12 object-contain" />
+        <h1 class="text-3xl font-bold mb-1 text-center">Edit Task</h1>
+        <p class="text-center text-sm text-green-500 mb-6">Made by Abhinav Choudhary</p>
+
+        <form method="post" class="mb-8">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <label for="{{ form.title.id_for_label }}" class="block font-medium text-gray-700">{{ form.title.label }}</label>
+                {{ form.title|add_class:"w-full p-2 border border-gray-300 rounded" }}
+                {% if form.title.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.title.errors.as_text }}</p>
+                {% endif %}
+
+                <label for="{{ form.description.id_for_label }}" class="block font-medium text-gray-700">{{ form.description.label }}</label>
+                {{ form.description|add_class:"w-full p-2 border border-gray-300 rounded" }}
+                {% if form.description.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.description.errors.as_text }}</p>
+                {% endif %}
+
+                <label for="{{ form.due_date.id_for_label }}" class="block font-medium text-gray-700">{{ form.due_date.label }}</label>
+                {{ form.due_date|add_class:"w-full p-2 border border-gray-300 rounded" }}
+                {% if form.due_date.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.due_date.errors.as_text }}</p>
+                {% endif %}
+            </div>
+            <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save Changes</button>
+            <a href="{% url 'index' %}" class="mt-4 ml-4 inline-block bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>
